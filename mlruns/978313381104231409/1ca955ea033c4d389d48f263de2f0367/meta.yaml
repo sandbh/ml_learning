@@ -1,0 +1,14 @@
+artifact_uri: /Users/sandibha/repos/ml_learning/mlruns/978313381104231409/1ca955ea033c4d389d48f263de2f0367/artifacts
+end_time: 1778044680621
+entry_point_name: ''
+experiment_id: '978313381104231409'
+lifecycle_stage: active
+run_id: 1ca955ea033c4d389d48f263de2f0367
+run_name: Logistic Regression
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1778044678580
+status: 3
+tags: []
+user_id: sandibha

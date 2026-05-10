@@ -1,0 +1,22 @@
+# HorizontalPodAutoscaler — optional; requires metrics-server in cluster.
+# Author: SANDIP BHATTACHARYYA — BITS Pilani ID 2025cs05025
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: heart-disease-api-hpa
+  namespace: heart-disease
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: heart-disease-api
+  minReplicas: 2
+  maxReplicas: 5
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70

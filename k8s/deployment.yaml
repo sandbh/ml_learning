@@ -1,0 +1,60 @@
+# Deployment — FastAPI container (image must exist in cluster or via docker load).
+# Env mirrors Dockerfile: PYTHONPATH, MODEL_PATH, FEATURE_PATH.
+# Usage: kubectl apply -f k8s/deployment.yaml
+# Author: SANDIP BHATTACHARYYA — BITS Pilani ID 2025cs05025
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: heart-disease-api
+  namespace: heart-disease
+  labels:
+    app: heart-disease-api
+spec:
+  # In-memory Prometheus metrics are per pod; scraping the Service can hit a pod with no /predict
+  # traffic yet (labeled counters may be absent). Use 1 replica for reliable demo metrics, or scale up
+  # for HA knowing Grafana may look sparse until all pods see traffic.
+  replicas: 1
+  selector:
+    matchLabels:
+      app: heart-disease-api
+  template:
+    metadata:
+      labels:
+        app: heart-disease-api
+    spec:
+      containers:
+        - name: heart-disease-api
+          image: heart-disease-api:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8000
+          env:
+            - name: PYTHONPATH
+              value: /app/src
+            - name: MODEL_PATH
+              value: /app/models/best_model.pkl
+            - name: FEATURE_PATH
+              value: /app/models/feature_names.pkl
+            - name: API_LOG_PATH
+              value: /tmp/api_requests.log
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 250m
+              memory: 256Mi
+            limits:
+              cpu: "1"
+              memory: 512Mi

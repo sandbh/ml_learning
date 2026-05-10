@@ -1,0 +1,19 @@
+# Prometheus Service — Grafana proxies queries here.
+# Author: SANDIP BHATTACHARYYA — BITS Pilani ID 2025cs05025
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus
+  namespace: heart-disease
+  labels:
+    app: prometheus
+spec:
+  type: ClusterIP
+  selector:
+    app: prometheus
+  ports:
+    - name: http
+      protocol: TCP
+      port: 9090
+      targetPort: http

@@ -1,0 +1,94 @@
+(.venv) (base) sandibha@SANDIBHA-M-QDX2 ml_learning % 
+(.venv) (base) sandibha@SANDIBHA-M-QDX2 ml_learning % 
+(.venv) (base) sandibha@SANDIBHA-M-QDX2 ml_learning % minikube start --driver=docker
+😄  minikube v1.38.1 on Darwin 26.4.1 (arm64)
+✨  Using the docker driver based on existing profile
+👍  Starting "minikube" primary control-plane node in "minikube" cluster
+🚜  Pulling base image v0.0.50 ...
+🔄  Restarting existing docker container for "minikube" ...
+🐳  Preparing Kubernetes v1.35.1 on Docker 29.2.1 ...
+🔎  Verifying Kubernetes components...
+    ▪ Using image gcr.io/k8s-minikube/storage-provisioner:v5
+🌟  Enabled addons: default-storageclass, storage-provisioner
+🏄  Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
+(.venv) (base) sandibha@SANDIBHA-M-QDX2 ml_learning % docker build -t heart-disease-api:latest .
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  112.8MB
+Step 1/11 : FROM python:3.11-slim
+ ---> 6d85378d88a1
+Step 2/11 : WORKDIR /app
+ ---> Using cache
+ ---> e813884ed78e
+Step 3/11 : ENV PYTHONDONTWRITEBYTECODE=1     PYTHONUNBUFFERED=1     PYTHONPATH=/app/src     MODEL_PATH=/app/models/best_model.pkl     FEATURE_PATH=/app/models/feature_names.pkl     API_LOG_PATH=/app/logs/api_requests.log     PIP_ROOT_USER_ACTION=ignore
+ ---> Using cache
+ ---> c59e71b76ef4
+Step 4/11 : RUN apt-get update && apt-get install -y --no-install-recommends     gcc     curl     && rm -rf /var/lib/apt/lists/*     && mkdir -p /app/logs
+ ---> Using cache
+ ---> c1386c97ed52
+Step 5/11 : COPY requirements.txt .
+ ---> Using cache
+ ---> 68b229e320b2
+Step 6/11 : RUN pip install --no-cache-dir --upgrade pip     && pip install --no-cache-dir -r requirements.txt
+ ---> Using cache
+ ---> dda690daefc4
+Step 7/11 : COPY src/ ./src/
+ ---> Using cache
+ ---> faca6c933541
+Step 8/11 : COPY models/ ./models/
+ ---> Using cache
+ ---> 8f66e5fe4b83
+Step 9/11 : EXPOSE 8000
+ ---> Using cache
+ ---> 026e3ed969f9
+Step 10/11 : HEALTHCHECK --interval=30s --timeout=10s --start-period=20s --retries=3     CMD curl -fsS http://127.0.0.1:8000/health >/dev/null || exit 1
+ ---> Using cache
+ ---> bf1bde75362d
+Step 11/11 : CMD ["uvicorn", "api.api:app", "--host", "0.0.0.0", "--port", "8000"]
+ ---> Using cache
+ ---> 7c277e9cdfce
+Successfully built 7c277e9cdfce
+Successfully tagged heart-disease-api:latest
+(.venv) (base) sandibha@SANDIBHA-M-QDX2 ml_learning % minikube image load heart-disease-api:latest
+(.venv) (base) sandibha@SANDIBHA-M-QDX2 ml_learning % kubectl apply -k k8s/
+namespace/heart-disease created
+configmap/grafana-dashboard-heart-api created
+configmap/grafana-dashboard-provider created
+configmap/grafana-datasources created
+configmap/prometheus-config created
+service/grafana created
+service/heart-disease-api-service created
+service/prometheus created
+deployment.apps/grafana created
+deployment.apps/heart-disease-api created
+deployment.apps/prometheus created
+(.venv) (base) sandibha@SANDIBHA-M-QDX2 ml_learning % kubectl rollout status deployment/heart-disease-api -n heart-disease --timeout=180s
+deployment "heart-disease-api" successfully rolled out
+(.venv) (base) sandibha@SANDIBHA-M-QDX2 ml_learning % kubectl rollout status deployment/prometheus -n heart-disease --timeout=120s
+deployment "prometheus" successfully rolled out
+(.venv) (base) sandibha@SANDIBHA-M-QDX2 ml_learning % kubectl rollout status deployment/grafana -n heart-disease --timeout=180s
+deployment "grafana" successfully rolled out
+(.venv) (base) sandibha@SANDIBHA-M-QDX2 ml_learning % kubectl get pods,svc,deployment,endpoints -n heart-disease
+Warning: v1 Endpoints is deprecated in v1.33+; use discovery.k8s.io/v1 EndpointSlice
+NAME                                     READY   STATUS    RESTARTS   AGE
+pod/grafana-55cc645554-pk7dk             1/1     Running   0          89s
+pod/heart-disease-api-58744bfb4f-q4cld   1/1     Running   0          89s
+pod/prometheus-d659456d5-z7r8r           1/1     Running   0          89s
+
+NAME                                TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+service/grafana                     ClusterIP      10.100.160.230   <none>        3000/TCP       89s
+service/heart-disease-api-service   LoadBalancer   10.106.133.48    <pending>     80:32156/TCP   89s
+service/prometheus                  ClusterIP      10.96.30.98      <none>        9090/TCP       89s
+
+NAME                                READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/grafana             1/1     1            1           89s
+deployment.apps/heart-disease-api   1/1     1            1           89s
+deployment.apps/prometheus          1/1     1            1           89s
+
+NAME                                  ENDPOINTS          AGE
+endpoints/grafana                     10.244.0.13:3000   89s
+endpoints/heart-disease-api-service   10.244.0.11:8000   89s
+endpoints/prometheus                  10.244.0.12:9090   89s
+

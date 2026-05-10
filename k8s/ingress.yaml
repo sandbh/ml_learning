@@ -1,0 +1,22 @@
+# Ingress — requires an ingress controller (nginx, etc.). Replace host as needed.
+# Author: SANDIP BHATTACHARYYA — BITS Pilani ID 2025cs05025
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: heart-disease-api-ingress
+  namespace: heart-disease
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: heart-api.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: heart-disease-api-service
+                port:
+                  number: 80

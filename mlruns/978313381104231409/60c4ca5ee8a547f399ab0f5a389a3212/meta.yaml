@@ -1,0 +1,14 @@
+artifact_uri: /Users/sandibha/repos/ml_learning/mlruns/978313381104231409/60c4ca5ee8a547f399ab0f5a389a3212/artifacts
+end_time: 1778044682072
+entry_point_name: ''
+experiment_id: '978313381104231409'
+lifecycle_stage: active
+run_id: 60c4ca5ee8a547f399ab0f5a389a3212
+run_name: Random Forest
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1778044680623
+status: 3
+tags: []
+user_id: sandibha

@@ -1,0 +1,20 @@
+# LoadBalancer Service exposing the API (port 80 -> container 8000).
+# Minikube/Docker Desktop: minikube service / kubectl get svc for URL.
+# Author: SANDIP BHATTACHARYYA — BITS Pilani ID 2025cs05025
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: heart-disease-api-service
+  namespace: heart-disease
+  labels:
+    app: heart-disease-api
+spec:
+  type: LoadBalancer
+  selector:
+    app: heart-disease-api
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: http

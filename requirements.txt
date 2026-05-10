@@ -1,0 +1,40 @@
+# =============================================================================
+# Author: SANDIP BHATTACHARYYA — BITS Pilani ID 2025cs05025
+# MLOps assignment — Heart disease prediction (Python 3.9+ recommended)
+# Install from repo root: pip install -r requirements.txt
+#
+# Sections below match typical coursework needs: sklearn pipeline, MLflow tracking,
+# optional API stacks (FastAPI/Flask), tests, linting, and monitoring hooks.
+# =============================================================================
+
+# --- Core ML & visualization ---
+pandas>=2.0
+numpy>=1.24
+# IMPORTANT: the saved pipeline in models/ was trained with scikit-learn 1.6.1
+# (see models/training_metadata.json and MLflow artifacts). Unpickling and running
+# sklearn Pipelines is not guaranteed to work across versions, so we pin it.
+scikit-learn==1.6.1
+matplotlib>=3.8
+seaborn>=0.13
+joblib>=1.3
+
+# --- Experiment tracking (local ./mlruns) ---
+mlflow>=2.12
+
+# --- Optional HTTP APIs / assignment extras ---
+fastapi>=0.110
+uvicorn>=0.29
+pydantic>=2.0
+flask>=3.0
+python-multipart>=0.0.9
+
+# --- Testing ---
+pytest>=8.0
+pytest-cov>=4.1.0
+httpx>=0.27
+
+# --- Linting ---
+flake8>=7.0
+
+# --- Monitoring (metrics endpoints etc.) ---
+prometheus-client>=0.20

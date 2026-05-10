@@ -1,0 +1,10 @@
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+2026-05-06 10:12:07,480  INFO  Model loaded from /app/models/best_model.pkl
+2026-05-06 10:12:07,480  INFO  Feature order (13): ['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal']
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     172.17.0.1:58550 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.17.0.1:58560 - "GET /health HTTP/1.1" 200 OK
+2026-05-06 10:12:07,544  INFO  PREDICT | pred=1 conf=0.708 risk=HIGH latency=0.005s | age=63.0 sex=1 cp=3
+INFO:     172.17.0.1:58566 - "POST /predict HTTP/1.1" 200 OK

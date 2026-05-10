@@ -1,0 +1,28 @@
+============================= test session starts ==============================
+platform linux -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /opt/hostedtoolcache/Python/3.11.15/x64/bin/python
+cachedir: .pytest_cache
+rootdir: /home/runner/work/ml_learning/ml_learning
+configfile: pytest.ini
+plugins: cov-7.1.0, anyio-4.13.0
+collecting ... collected 17 items
+
+tests/test_pipeline.py::test_load_data_shape PASSED                      [  5%]
+tests/test_pipeline.py::test_load_data_columns PASSED                    [ 11%]
+tests/test_pipeline.py::test_clean_no_missing_values PASSED              [ 17%]
+tests/test_pipeline.py::test_clean_no_question_marks PASSED              [ 23%]
+tests/test_pipeline.py::test_clean_target_is_binary PASSED               [ 29%]
+tests/test_pipeline.py::test_clean_all_numeric PASSED                    [ 35%]
+tests/test_pipeline.py::test_clean_sex_encoding PASSED                   [ 41%]
+tests/test_pipeline.py::test_clean_target_both_classes PASSED            [ 47%]
+tests/test_pipeline.py::test_train_test_split_sizes PASSED               [ 52%]
+tests/test_pipeline.py::test_no_target_in_features PASSED                [ 58%]
+tests/test_pipeline.py::test_feature_count PASSED                        [ 64%]
+tests/test_pipeline.py::test_logistic_regression_pipeline PASSED         [ 70%]
+tests/test_pipeline.py::test_random_forest_pipeline PASSED               [ 76%]
+tests/test_pipeline.py::test_model_predict_proba PASSED                  [ 82%]
+tests/test_pipeline.py::test_model_accuracy_reasonable PASSED            [ 88%]
+tests/test_pipeline.py::test_valid_patient_data PASSED                   [ 94%]
+tests/test_pipeline.py::test_patient_data_requires_all_fields PASSED     [100%]
+
+- generated xml file: /home/runner/work/ml_learning/ml_learning/pytest-results.xml -
+============================== 17 passed in 3.95s ==============================

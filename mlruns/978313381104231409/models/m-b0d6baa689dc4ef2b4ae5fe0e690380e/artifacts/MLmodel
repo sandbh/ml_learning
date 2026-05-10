@@ -1,0 +1,14 @@
+artifact_path: /Users/sandibha/repos/ml_learning/mlruns/978313381104231409/models/m-b0d6baa689dc4ef2b4ae5fe0e690380e/artifacts
+flavors:
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.6.1
+mlflow_version: 3.1.4
+model_id: m-b0d6baa689dc4ef2b4ae5fe0e690380e
+model_size_bytes: 2048
+model_uuid: m-b0d6baa689dc4ef2b4ae5fe0e690380e
+prompts: null
+run_id: 8564dc526a24494bac0faab8f335d691
+utc_time_created: '2026-05-06 05:51:30.017298'

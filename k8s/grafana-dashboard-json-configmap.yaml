@@ -1,0 +1,143 @@
+# Regenerate: kubectl create configmap grafana-dashboard-heart-api -n heart-disease --from-file=heart_disease_api.json=../monitoring/grafana/heart_disease_api.json -o yaml --dry-run=client
+# (run from k8s/ and fix path, or use repo-root path)
+apiVersion: v1
+data:
+  heart_disease_api.json: |
+    {
+      "uid": "heart-disease-api",
+      "title": "Heart Disease API (Prometheus)",
+      "description": "Author: SANDIP BHATTACHARYYA — BITS Pilani ID 2025cs05025",
+      "tags": ["mlops", "heart", "fastapi"],
+      "timezone": "browser",
+      "schemaVersion": 38,
+      "version": 1,
+      "refresh": "10s",
+      "time": { "from": "now-1h", "to": "now" },
+      "panels": [
+        {
+          "id": 1,
+          "title": "Predict requests (total)",
+          "type": "stat",
+          "gridPos": { "h": 5, "w": 8, "x": 0, "y": 0 },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "sum(predict_requests_total{status=\"success\"})",
+              "legendFormat": "requests"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": { "color": { "mode": "palette-classic" }, "mappings": [] },
+            "overrides": []
+          },
+          "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "orientation": "auto" }
+        },
+        {
+          "id": 2,
+          "title": "Request rate by status",
+          "type": "timeseries",
+          "gridPos": { "h": 9, "w": 16, "x": 8, "y": 0 },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "sum by (status) (increase(predict_requests_total[5m]))",
+              "legendFormat": "{{status}}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": { "custom": { "drawStyle": "line", "fillOpacity": 10 } },
+            "overrides": []
+          }
+        },
+        {
+          "id": 3,
+          "title": "Prediction labels (rate)",
+          "type": "timeseries",
+          "gridPos": { "h": 9, "w": 24, "x": 0, "y": 9 },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "sum by (label) (increase(prediction_label_total[5m]))",
+              "legendFormat": "{{label}}"
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "title": "Predict latency p95 (s)",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 18 },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "histogram_quantile(0.95, sum(rate(predict_request_latency_seconds_bucket[5m])) by (le))",
+              "legendFormat": "p95"
+            }
+          ]
+        }
+        ,
+        {
+          "id": 5,
+          "title": "Last prediction (0/1)",
+          "type": "stat",
+          "gridPos": { "h": 5, "w": 6, "x": 12, "y": 18 },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "targets": [
+            { "refId": "A", "expr": "last_over_time(last_prediction[10m])" }
+          ],
+          "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "orientation": "auto" }
+        },
+        {
+          "id": 6,
+          "title": "Last confidence",
+          "type": "stat",
+          "gridPos": { "h": 5, "w": 6, "x": 18, "y": 18 },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "targets": [
+            { "refId": "A", "expr": "last_over_time(last_prediction_confidence[10m])" }
+          ],
+          "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "orientation": "auto" }
+        },
+        {
+          "id": 7,
+          "title": "Risk level rate",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 23 },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "sum by (risk_level) (increase(prediction_risk_level_total[5m]))",
+              "legendFormat": "{{risk_level}}"
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "title": "Confidence p50/p95",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 26 },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "histogram_quantile(0.50, sum(increase(prediction_confidence_bucket[5m])) by (le))",
+              "legendFormat": "p50"
+            },
+            {
+              "refId": "B",
+              "expr": "histogram_quantile(0.95, sum(increase(prediction_confidence_bucket[5m])) by (le))",
+              "legendFormat": "p95"
+            }
+          ]
+        }
+      ]
+    }
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-heart-api
+  namespace: heart-disease

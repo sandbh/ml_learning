@@ -1,0 +1,18 @@
+# Prometheus scrape config for Docker Compose (service name heart-disease-api).
+# Mounted into the prometheus container via docker-compose.yml.
+# Author: SANDIP BHATTACHARYYA — BITS Pilani ID 2025cs05025
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  # Faster scrape during local Compose tests so counters appear in TSDB quickly after /predict.
+  - job_name: heart-disease-api
+    scrape_interval: 5s
+    # Prometheus requires scrape_timeout <= scrape_interval.
+    scrape_timeout: 4s
+    metrics_path: /metrics
+    static_configs:
+      - targets:
+          - heart-disease-api:8000

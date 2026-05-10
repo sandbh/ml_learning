@@ -1,0 +1,95 @@
+prometheus  | ts=2026-05-06T16:18:28.564Z caller=main.go:539 level=info msg="No time or size retention was set so using the default time retention" duration=15d
+prometheus  | ts=2026-05-06T16:18:28.565Z caller=main.go:583 level=info msg="Starting Prometheus Server" mode=server version="(version=2.47.2, branch=HEAD, revision=3f3172cde1ee37f1c7b3a5f3d9b031190509b3ad)"
+prometheus  | ts=2026-05-06T16:18:28.565Z caller=main.go:588 level=info build_context="(go=go1.21.3, platform=linux/arm64, user=root@79f2ad339b75, date=20231012-16:15:18, tags=netgo,builtinassets,stringlabels)"
+prometheus  | ts=2026-05-06T16:18:28.565Z caller=main.go:589 level=info host_details="(Linux 6.8.0-100-generic #100-Ubuntu SMP PREEMPT_DYNAMIC Tue Jan 13 16:39:21 UTC 2026 aarch64 40d80f859156 (none))"
+prometheus  | ts=2026-05-06T16:18:28.565Z caller=main.go:590 level=info fd_limits="(soft=524288, hard=524288)"
+prometheus  | ts=2026-05-06T16:18:28.565Z caller=main.go:591 level=info vm_limits="(soft=unlimited, hard=unlimited)"
+prometheus  | ts=2026-05-06T16:18:28.566Z caller=web.go:566 level=info component=web msg="Start listening for connections" address=0.0.0.0:9090
+prometheus  | ts=2026-05-06T16:18:28.567Z caller=main.go:1024 level=info msg="Starting TSDB ..."
+prometheus  | ts=2026-05-06T16:18:28.568Z caller=tls_config.go:274 level=info component=web msg="Listening on" address=[::]:9090
+prometheus  | ts=2026-05-06T16:18:28.571Z caller=tls_config.go:277 level=info component=web msg="TLS is disabled." http2=false address=[::]:9090
+prometheus  | ts=2026-05-06T16:18:28.574Z caller=head.go:600 level=info component=tsdb msg="Replaying on-disk memory mappable chunks if any"
+prometheus  | ts=2026-05-06T16:18:28.574Z caller=head.go:681 level=info component=tsdb msg="On-disk memory mappable chunks replay completed" duration=5.669µs
+prometheus  | ts=2026-05-06T16:18:28.574Z caller=head.go:689 level=info component=tsdb msg="Replaying WAL, this may take a while"
+prometheus  | ts=2026-05-06T16:18:28.574Z caller=head.go:760 level=info component=tsdb msg="WAL segment loaded" segment=0 maxSegment=0
+prometheus  | ts=2026-05-06T16:18:28.574Z caller=head.go:797 level=info component=tsdb msg="WAL replay completed" checkpoint_replay_duration=12.84µs wal_replay_duration=214.055µs wbl_replay_duration=42ns total_replay_duration=239.775µs
+prometheus  | ts=2026-05-06T16:18:28.575Z caller=main.go:1045 level=info fs_type=EXT4_SUPER_MAGIC
+prometheus  | ts=2026-05-06T16:18:28.575Z caller=main.go:1048 level=info msg="TSDB started"
+prometheus  | ts=2026-05-06T16:18:28.575Z caller=main.go:1229 level=info msg="Loading configuration file" filename=/etc/prometheus/prometheus.yml
+prometheus  | ts=2026-05-06T16:18:28.576Z caller=main.go:1266 level=info msg="Completed loading of configuration file" filename=/etc/prometheus/prometheus.yml totalDuration=580.805µs db_storage=709ns remote_storage=709ns web_handler=209ns query_engine=709ns scrape=146.149µs scrape_sd=9.213µs notify=626ns notify_sd=501ns rules=3.168µs tracing=5.503µs
+prometheus  | ts=2026-05-06T16:18:28.576Z caller=main.go:1009 level=info msg="Server is ready to receive web requests."
+prometheus  | ts=2026-05-06T16:18:28.576Z caller=manager.go:1009 level=info component="rule manager" msg="Starting rule manager..."
+grafana     | logger=settings t=2026-05-06T16:18:28.787711412Z level=info msg="Starting Grafana" version=10.1.5 commit=849c612fcb branch=HEAD compiled=2023-10-11T16:34:00Z
+grafana     | logger=settings t=2026-05-06T16:18:28.787950103Z level=info msg="Config loaded from" file=/usr/share/grafana/conf/defaults.ini
+grafana     | logger=settings t=2026-05-06T16:18:28.78797453Z level=info msg="Config loaded from" file=/etc/grafana/grafana.ini
+grafana     | logger=settings t=2026-05-06T16:18:28.787984702Z level=info msg="Config overridden from command line" arg="default.paths.data=/var/lib/grafana"
+grafana     | logger=settings t=2026-05-06T16:18:28.787993581Z level=info msg="Config overridden from command line" arg="default.paths.logs=/var/log/grafana"
+grafana     | logger=settings t=2026-05-06T16:18:28.788001501Z level=info msg="Config overridden from command line" arg="default.paths.plugins=/var/lib/grafana/plugins"
+grafana     | logger=settings t=2026-05-06T16:18:28.788009088Z level=info msg="Config overridden from command line" arg="default.paths.provisioning=/etc/grafana/provisioning"
+grafana     | logger=settings t=2026-05-06T16:18:28.788016674Z level=info msg="Config overridden from command line" arg="default.log.mode=console"
+grafana     | logger=settings t=2026-05-06T16:18:28.788039602Z level=info msg="Config overridden from Environment variable" var="GF_PATHS_DATA=/var/lib/grafana"
+grafana     | logger=settings t=2026-05-06T16:18:28.788047647Z level=info msg="Config overridden from Environment variable" var="GF_PATHS_LOGS=/var/log/grafana"
+grafana     | logger=settings t=2026-05-06T16:18:28.788055025Z level=info msg="Config overridden from Environment variable" var="GF_PATHS_PLUGINS=/var/lib/grafana/plugins"
+grafana     | logger=settings t=2026-05-06T16:18:28.78806207Z level=info msg="Config overridden from Environment variable" var="GF_PATHS_PROVISIONING=/etc/grafana/provisioning"
+grafana     | logger=settings t=2026-05-06T16:18:28.788069157Z level=info msg="Config overridden from Environment variable" var="GF_SECURITY_ADMIN_USER=admin"
+grafana     | logger=settings t=2026-05-06T16:18:28.788077535Z level=info msg="Config overridden from Environment variable" var="GF_SECURITY_ADMIN_PASSWORD=*********"
+grafana     | logger=settings t=2026-05-06T16:18:28.788099253Z level=info msg="Config overridden from Environment variable" var="GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH=/var/lib/grafana/dashboards/heart_disease_api.json"
+grafana     | logger=settings t=2026-05-06T16:18:28.78811301Z level=info msg="Config overridden from Environment variable" var="GF_USERS_ALLOW_SIGN_UP=false"
+grafana     | logger=settings t=2026-05-06T16:18:28.788122597Z level=info msg=Target target=[all]
+grafana     | logger=settings t=2026-05-06T16:18:28.788132185Z level=info msg="Path Home" path=/usr/share/grafana
+grafana     | logger=settings t=2026-05-06T16:18:28.78813948Z level=info msg="Path Data" path=/var/lib/grafana
+grafana     | logger=settings t=2026-05-06T16:18:28.7881464Z level=info msg="Path Logs" path=/var/log/grafana
+grafana     | logger=settings t=2026-05-06T16:18:28.788156113Z level=info msg="Path Plugins" path=/var/lib/grafana/plugins
+grafana     | logger=settings t=2026-05-06T16:18:28.788163658Z level=info msg="Path Provisioning" path=/etc/grafana/provisioning
+grafana     | logger=settings t=2026-05-06T16:18:28.788175955Z level=info msg="App mode production"
+grafana     | logger=sqlstore t=2026-05-06T16:18:28.78828959Z level=info msg="Connecting to DB" dbtype=sqlite3
+grafana     | logger=migrator t=2026-05-06T16:18:28.799283058Z level=info msg="Starting DB migrations"
+grafana     | logger=migrator t=2026-05-06T16:18:28.801907828Z level=info msg="migrations completed" performed=0 skipped=494 duration=189.752µs
+grafana     | logger=secrets t=2026-05-06T16:18:28.802327476Z level=info msg="Envelope encryption state" enabled=true currentprovider=secretKey.v1
+grafana     | logger=local.finder t=2026-05-06T16:18:28.829239347Z level=warn msg="Skipping finding plugins as directory does not exist" path=/usr/share/grafana/plugins-bundled
+grafana     | logger=query_data t=2026-05-06T16:18:28.830497958Z level=info msg="Query Service initialization"
+grafana     | logger=live.push_http t=2026-05-06T16:18:28.837316957Z level=info msg="Live Push Gateway initialization"
+grafana     | logger=infra.usagestats.collector t=2026-05-06T16:18:29.711140532Z level=info msg="registering usage stat providers" usageStatsProvidersLen=2
+grafana     | logger=modules t=2026-05-06T16:18:29.711270591Z level=info msg=initialising module=http-server
+grafana     | logger=modules t=2026-05-06T16:18:29.711345333Z level=info msg=initialising module=secret-migrator
+grafana     | logger=http.server t=2026-05-06T16:18:29.714096995Z level=info msg="HTTP Server Listen" address=[::]:3000 protocol=http subUrl= socket=
+grafana     | logger=modules t=2026-05-06T16:18:29.715045507Z level=info msg=initialising module=provisioning
+grafana     | logger=provisioning.plugins t=2026-05-06T16:18:29.721375538Z level=error msg="Failed to read plugin provisioning files from directory" path=/etc/grafana/provisioning/plugins error="open /etc/grafana/provisioning/plugins: no such file or directory"
+grafana     | logger=provisioning.notifiers t=2026-05-06T16:18:29.721421475Z level=error msg="Can't read alert notification provisioning files from directory" path=/etc/grafana/provisioning/notifiers error="open /etc/grafana/provisioning/notifiers: no such file or directory"
+grafana     | logger=provisioning.alerting t=2026-05-06T16:18:29.721477125Z level=error msg="can't read alerting provisioning files from directory" path=/etc/grafana/provisioning/alerting error="open /etc/grafana/provisioning/alerting: no such file or directory"
+grafana     | logger=provisioning.alerting t=2026-05-06T16:18:29.72148292Z level=info msg="starting to provision alerting"
+grafana     | logger=provisioning.alerting t=2026-05-06T16:18:29.721485963Z level=info msg="finished to provision alerting"
+grafana     | logger=modules t=2026-05-06T16:18:29.72150222Z level=info msg=initialising module=background-services
+grafana     | logger=modules t=2026-05-06T16:18:29.721775218Z level=info msg="All modules healthy" modules="[http-server secret-migrator provisioning background-services]"
+grafana     | logger=ngalert.state.manager t=2026-05-06T16:18:29.72182274Z level=info msg="Warming state cache for startup"
+grafana     | logger=grafanaStorageLogger t=2026-05-06T16:18:29.724258467Z level=info msg="storage starting"
+grafana     | logger=ngalert.state.manager t=2026-05-06T16:18:29.7254009Z level=info msg="State cache has been initialized" states=0 duration=3.578327ms
+grafana     | logger=ngalert.scheduler t=2026-05-06T16:18:29.725444087Z level=info msg="Starting scheduler" tickInterval=10s
+grafana     | logger=ngalert.multiorg.alertmanager t=2026-05-06T16:18:29.725476476Z level=info msg="Starting MultiOrg Alertmanager"
+grafana     | logger=ticker t=2026-05-06T16:18:29.725484772Z level=info msg=starting first_tick=2026-05-06T16:18:30Z
+grafana     | logger=grafana.update.checker t=2026-05-06T16:18:29.776197797Z level=info msg="Update check succeeded" duration=52.983136ms
+grafana     | logger=plugins.update.checker t=2026-05-06T16:18:30.143820831Z level=info msg="Update check succeeded" duration=420.192483ms
+grafana     | logger=context userId=1 orgId=1 uname=admin t=2026-05-06T16:18:35.862435863Z level=info msg="Request Completed" method=GET path=/api/live/ws status=-1 remote_addr=172.18.0.1 time_ms=14 duration=14.04926ms size=0 referer= handler=/api/live/ws
+grafana     | logger=live t=2026-05-06T16:18:35.867423229Z level=info msg="Initialized channel handler" channel=grafana/dashboard/uid/heart-disease-api address=grafana/dashboard/uid/heart-disease-api
+heart-disease-api  | INFO:     Started server process [1]
+heart-disease-api  | INFO:     Waiting for application startup.
+heart-disease-api  | 2026-05-06 16:18:29,402  INFO  Model loaded from /app/models/best_model.pkl
+heart-disease-api  | 2026-05-06 16:18:29,402  INFO  Feature order (13): ['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal']
+heart-disease-api  | INFO:     Application startup complete.
+heart-disease-api  | INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+heart-disease-api  | INFO:     127.0.0.1:33066 - "GET /health HTTP/1.1" 200 OK
+heart-disease-api  | INFO:     172.18.0.3:53736 - "GET /metrics HTTP/1.1" 200 OK
+heart-disease-api  | INFO:     172.18.0.3:53736 - "GET /metrics HTTP/1.1" 200 OK
+heart-disease-api  | INFO:     172.18.0.3:53736 - "GET /metrics HTTP/1.1" 200 OK
+heart-disease-api  | INFO:     172.18.0.3:53736 - "GET /metrics HTTP/1.1" 200 OK
+heart-disease-api  | INFO:     172.18.0.3:53736 - "GET /metrics HTTP/1.1" 200 OK
+heart-disease-api  | INFO:     172.18.0.3:53736 - "GET /metrics HTTP/1.1" 200 OK
+heart-disease-api  | INFO:     127.0.0.1:53282 - "GET /health HTTP/1.1" 200 OK
+heart-disease-api  | INFO:     172.18.0.3:53736 - "GET /metrics HTTP/1.1" 200 OK
+heart-disease-api  | INFO:     172.18.0.3:53736 - "GET /metrics HTTP/1.1" 200 OK
+heart-disease-api  | INFO:     172.18.0.3:53736 - "GET /metrics HTTP/1.1" 200 OK
+heart-disease-api  | INFO:     172.18.0.3:53736 - "GET /metrics HTTP/1.1" 200 OK
+heart-disease-api  | INFO:     172.18.0.3:53736 - "GET /metrics HTTP/1.1" 200 OK
+heart-disease-api  | INFO:     172.18.0.3:53736 - "GET /metrics HTTP/1.1" 200 OK
+heart-disease-api  | INFO:     127.0.0.1:40138 - "GET /health HTTP/1.1" 200 OK
+heart-disease-api  | INFO:     172.18.0.3:53736 - "GET /metrics HTTP/1.1" 200 OK

@@ -1,0 +1,10 @@
+artifact_location: /Users/sandibha/repos/ml_learning/mlruns/978313381104231409/models/m-a3be39bd2d6449ccb54767d1002a56e2/artifacts
+creation_timestamp: 1778044320851
+experiment_id: '978313381104231409'
+last_updated_timestamp: 1778044320953
+model_id: m-a3be39bd2d6449ccb54767d1002a56e2
+model_type: null
+name: model
+source_run_id: 16aaccae38854964932ca20ea4f30882
+status: 2
+status_message: null

@@ -1,0 +1,16 @@
+2026-05-06 10:25:43,940  INFO  Model loaded from /Users/sandibha/repos/ml_learning/models/best_model.pkl
+2026-05-06 10:25:43,941  INFO  Feature order (13): ['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal']
+2026-05-06 10:26:34,030  INFO  Model loaded from /Users/sandibha/repos/ml_learning/models/best_model.pkl
+2026-05-06 10:26:34,031  INFO  Feature order (13): ['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal']
+2026-05-06 10:27:52,374  INFO  PREDICT | pred=1 conf=0.708 risk=HIGH latency=0.013s | age=63.0 sex=1 cp=3
+2026-05-06 10:42:11,910  INFO  PREDICT | pred=1 conf=0.708 risk=HIGH latency=0.005s | age=63.0 sex=1 cp=3
+2026-05-06 10:42:11,950  INFO  PREDICT | pred=1 conf=0.708 risk=HIGH latency=0.002s | age=63.0 sex=1 cp=3
+2026-05-06 10:42:11,989  INFO  PREDICT | pred=1 conf=0.708 risk=HIGH latency=0.002s | age=63.0 sex=1 cp=3
+2026-05-06 10:49:14,962  INFO  Model loaded from /Users/sandibha/repos/ml_learning/models/best_model.pkl
+2026-05-06 10:49:14,962  INFO  Feature order (13): ['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal']
+2026-05-06 20:43:48,223  INFO  Model loaded from /Users/sandibha/repos/ml_learning/models/best_model.pkl
+2026-05-06 20:43:48,224  INFO  Feature order (13): ['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal']
+2026-05-06 20:44:30,343  INFO  PREDICT | pred=1 conf=0.708 risk=HIGH latency=0.011s | age=63.0 sex=1 cp=3
+2026-05-06 20:46:01,759  INFO  PREDICT | pred=1 conf=0.708 risk=HIGH latency=0.008s | age=63.0 sex=1 cp=3
+2026-05-06 20:51:56,318  INFO  PREDICT | pred=1 conf=0.708 risk=HIGH latency=0.015s | age=63.0 sex=1 cp=3
+2026-05-06 20:52:17,028  INFO  PREDICT | pred=1 conf=0.708 risk=HIGH latency=0.004s | age=63.0 sex=1 cp=3
