@@ -53,18 +53,6 @@ import warnings
 from datetime import datetime, timezone
 from pathlib import Path
 
-_TRAIN_DIR = Path(__file__).resolve().parent
-_SRC_ROOT = _TRAIN_DIR.parent  # .../src
-if str(_SRC_ROOT) not in sys.path:
-    sys.path.insert(0, str(_SRC_ROOT))
-
-from config.paths import (
-    CLEAN_DATA_CSV,
-    MLRUNS_DIR,
-    MODELS_DIR,
-    SCREENSHOTS_DIR,
-)
-
 import joblib
 import matplotlib.pyplot as plt
 import mlflow
@@ -72,6 +60,7 @@ import mlflow.sklearn
 import numpy as np
 import pandas as pd
 import seaborn as sns
+import sklearn
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LogisticRegression
@@ -93,7 +82,18 @@ from sklearn.model_selection import (
 )
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
-import sklearn
+
+_TRAIN_DIR = Path(__file__).resolve().parent
+_SRC_ROOT = _TRAIN_DIR.parent  # .../src
+if str(_SRC_ROOT) not in sys.path:
+    sys.path.insert(0, str(_SRC_ROOT))
+
+from config.paths import (  # noqa: E402
+    CLEAN_DATA_CSV,
+    MLRUNS_DIR,
+    MODELS_DIR,
+    SCREENSHOTS_DIR,
+)
 
 
 def _patch_mlflow_sklearn_pyfunc_if_lzma_missing() -> None:
