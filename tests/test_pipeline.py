@@ -1,9 +1,11 @@
 """
-Unit tests for preprocessing, training helpers, and API schemas (assignment criterion 5).
+Unit tests for preprocessing, training helpers, and API schemas
+(assignment criterion 5).
 
 **File:** ``tests/test_pipeline.py``
 
-**Usage** — always run from the **repository root** (where ``pytest.ini`` lives); it sets
+**Usage** — always run from the **repository root** (where ``pytest.ini``
+lives); it sets
 ``pythonpath = src`` so imports match runtime layout.
 
 .. code-block:: bash
@@ -14,8 +16,8 @@ Unit tests for preprocessing, training helpers, and API schemas (assignment crit
       --cov=data_preprocessing --cov=model_training --cov=api \\
       --cov-report=term-missing
 
-**Coverage:** ``load_data`` / ``clean_data``, train/test splits, both sklearn pipelines,
-``predict_proba``, and ``PatientData`` validation.
+**Coverage:** ``load_data`` / ``clean_data``, train/test splits, both sklearn
+pipelines, ``predict_proba``, and ``PatientData`` validation.
 
 **Author.** SANDIP BHATTACHARYYA — BITS Pilani ID 2025cs05025
 """
@@ -108,7 +110,9 @@ def test_clean_no_question_marks(clean_df):
 def test_clean_target_is_binary(clean_df):
     """Target must only contain 0 and 1."""
     unique_targets = set(clean_df["target"].unique())
-    assert unique_targets <= {0, 1}, f"Non-binary target values: {unique_targets}"
+    assert unique_targets <= {0, 1}, (
+        f"Non-binary target values: {unique_targets}"
+    )
 
 
 def test_clean_all_numeric(clean_df):
@@ -151,7 +155,9 @@ def test_no_target_in_features(splits):
 
 def test_feature_count(splits):
     X_train, _, _, _ = splits
-    assert X_train.shape[1] == 13, f"Expected 13 features, got {X_train.shape[1]}"
+    assert X_train.shape[1] == 13, (
+        f"Expected 13 features, got {X_train.shape[1]}"
+    )
 
 
 # ─────────────────────────────────────────────
