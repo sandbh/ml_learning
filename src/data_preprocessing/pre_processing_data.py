@@ -5,24 +5,28 @@ Heart disease dataset loading and preprocessing.
 
 **Usage**
 
-- Imported by ``eda/eda.py``, ``model_training/train.py`` (via cleaned CSV), and
-  ``model_training/inference.py`` (raw → clean for inference).
+- Imported by ``eda/eda.py``, ``model_training/train.py`` (via cleaned CSV),
+  and ``model_training/inference.py`` (raw → clean for inference).
 - Do not run this file directly; call ``load_data``, ``clean_data``, or
   ``save_cleaned_csv`` from other modules or tests.
 
 **Pipeline (conceptual).**
 
-1. ``load_data`` — Read ``heart_disease_UCI_dataset.csv`` (comma header, irregular rows),
-   normalize tokens, build a dataframe including ``target``.
-2. ``clean_data`` — Map categories to codes, impute missing features (median/mode),
-   binarise ``target`` (healthy vs disease), drop unused columns; all numeric features.
-3. ``save_cleaned_csv`` — Persist ``heart_disease_processed_dataset.csv`` for EDA and modelling.
+1. ``load_data`` — Read ``heart_disease_UCI_dataset.csv`` (comma header,
+   irregular rows), normalize tokens, build a dataframe including ``target``.
+2. ``clean_data`` — Map categories to codes, impute missing features
+   (median/mode), binarise ``target`` (healthy vs disease), drop unused
+   columns; all numeric features.
+3. ``save_cleaned_csv`` — Persist ``heart_disease_processed_dataset.csv`` for
+   EDA and modelling.
 
-**Consumers.** ``eda/eda.py`` runs this flow end-to-end; ``model_training/train.py``
-loads the cleaned CSV; ``model_training/inference.py`` calls ``load_data`` + ``clean_data``
-on raw inputs so batch scoring matches training features.
+**Consumers.** ``eda/eda.py`` runs this flow end-to-end;
+``model_training/train.py`` loads the cleaned CSV;
+``model_training/inference.py`` calls ``load_data`` + ``clean_data`` on raw
+inputs so batch scoring matches training features.
 
-**Outputs.** Files under ``data/``; plots are **not** produced here (see ``eda/eda.py``).
+**Outputs.** Files under ``data/``; plots are **not** produced here (see
+``eda/eda.py``).
 
 Author
 ------
@@ -42,14 +46,17 @@ import pandas as pd
 from config.paths import DEFAULT_CLEAN_CSV, DEFAULT_CSV, PROJECT_ROOT
 
 
-def load_data(path: str | Path | None = None, *, verbose: bool = True) -> pd.DataFrame:
+def load_data(
+    path: str | Path | None = None, *, verbose: bool = True
+) -> pd.DataFrame:
     """
     Load the heart disease dataset from the project CSV.
 
-    **If you are new here:** This function only **reads** the file into a dataframe.
-    It does **not** apply the cleaning rules (missing values, label encoding). Those
-    happen in :func:`clean_data`. Training typically uses the cleaned CSV produced by
-    EDA; prediction calls ``load_data`` then ``clean_data`` so live rows match training.
+    **If you are new here:** This function only **reads** the file into a
+    dataframe. It does **not** apply the cleaning rules (missing values, label
+    encoding). Those happen in :func:`clean_data`. Training typically uses the
+    cleaned CSV produced by EDA; prediction calls ``load_data`` then
+    ``clean_data`` so live rows match training.
 
     Reads ``data/heart_disease_UCI_dataset.csv`` by default. The file uses a
     comma-separated header line and whitespace-separated body lines. Some rows
@@ -83,7 +90,8 @@ def load_data(path: str | Path | None = None, *, verbose: bool = True) -> pd.Dat
     if not path.is_file():
         raise FileNotFoundError(
             f"Dataset not found: {path}\n"
-            "Expected `data/heart_disease_UCI_dataset.csv` in the project (or pass another path)."
+            "Expected `data/heart_disease_UCI_dataset.csv` in the project "
+            "(or pass another path)."
         )
 
     with open(path, encoding="utf-8") as f:
@@ -105,7 +113,9 @@ def load_data(path: str | Path | None = None, *, verbose: bool = True) -> pd.Dat
         records.append(row)
 
     df = pd.DataFrame(records, columns=columns)
-    df = df.apply(lambda col: col.str.strip() if col.dtype == "object" else col)
+    df = df.apply(
+        lambda col: col.str.strip() if col.dtype == "object" else col
+    )
 
     if verbose:
         print("Dataset loaded successfully")
@@ -121,9 +131,9 @@ def clean_data(df: pd.DataFrame, *, verbose: bool = True) -> pd.DataFrame:
     Replaces ``'?'`` with NaN, maps string categories to integer codes, coerces
     numeric columns, imputes missing **feature** values (median for numeric,
     mode fallback otherwise), and never imputes the raw string target. The
-    target is then binarised: ``H`` (healthy) → ``0``, any disease label
-    (e.g. ``S1``–``S4``) → ``1``. Optional column ``num`` is dropped if present;
-    any remaining non-numeric feature columns are removed.
+    target is then binarised: ``H`` (healthy) → ``0``, any disease label (e.g.
+    ``S1``–``S4``) → ``1``. Optional column ``num`` is dropped if present; any
+    remaining non-numeric feature columns are removed.
 
     Parameters
     ----------
@@ -218,16 +228,17 @@ def save_cleaned_csv(
     """
     Write a preprocessed dataframe to CSV.
 
-    **Typical use:** After :func:`clean_data`, save to ``data/heart_disease_processed_dataset.csv`` so
-    ``model_training/train.py`` can load a stable file without re-running EDA.
+    **Typical use:** After :func:`clean_data`, save to
+    ``data/heart_disease_processed_dataset.csv`` so ``model_training/train.py``
+    can load a stable file without re-running EDA.
 
     Parameters
     ----------
     df : pandas.DataFrame
         Output of :func:`clean_data`.
     path : str, pathlib.Path, or None
-        Destination file. If ``None``, uses ``data/heart_disease_processed_dataset.csv`` under
-        ``PROJECT_ROOT``.
+        Destination file. If ``None``, uses
+        ``data/heart_disease_processed_dataset.csv`` under ``PROJECT_ROOT``.
     index : bool
         Passed through to ``DataFrame.to_csv``.
 

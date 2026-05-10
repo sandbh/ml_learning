@@ -1,15 +1,20 @@
 """
-Batch inference: raw heart-disease CSV → shared preprocessing → trained pipeline.
+Batch inference: raw heart-disease CSV → shared preprocessing → trained
+pipeline.
 
 **Purpose.** Score new rows with the **same** cleaning path as training (via
-``data_preprocessing.load_data`` / ``clean_data``), then apply ``models/best_model.pkl``.
-Demonstrates reproducible packaging: no silent feature drift between train and inference.
+``data_preprocessing.load_data`` / ``clean_data``), then apply
+``models/best_model.pkl``.
+Demonstrates reproducible packaging: no silent feature drift between train
+and inference.
 
 **Inputs**
 
 - Raw CSV (default ``data/heart_disease_UCI_dataset.csv`` or ``--raw``).
-- ``--model`` — pickled sklearn ``Pipeline`` (default ``models/best_model.pkl``).
-- ``--feature-names`` — column order saved at train time (default ``models/feature_names.pkl``).
+- ``--model`` — pickled sklearn ``Pipeline`` (default
+  ``models/best_model.pkl``).
+- ``--feature-names`` — column order saved at train time (default
+  ``models/feature_names.pkl``).
 
 **Outputs**
 
@@ -40,8 +45,8 @@ _SRC_ROOT = _INF_DIR.parent  # .../src
 if str(_SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(_SRC_ROOT))
 
-from config.paths import MODELS_DIR, RAW_DATA_CSV
-from data_preprocessing import clean_data, load_data
+from config.paths import MODELS_DIR, RAW_DATA_CSV  # noqa: E402
+from data_preprocessing import clean_data, load_data  # noqa: E402
 
 
 def run_inference(
@@ -56,19 +61,22 @@ def run_inference(
     **Flow**
 
     1. Load pickled ``Pipeline`` and list of feature names from training.
-    2. Parse ``raw_csv`` with :func:`data_preprocessing.load_data` and clean with
-       :func:`data_preprocessing.clean_data` (same rules as for ``heart_disease_processed_dataset.csv``).
+    2. Parse ``raw_csv`` with :func:`data_preprocessing.load_data` and clean
+       with :func:`data_preprocessing.clean_data` (same rules as for
+       ``heart_disease_processed_dataset.csv``).
     3. Align columns to ``feature_names`` (order matters for the fitted model).
     4. Output predicted class and probability of the positive class.
 
-    If the cleaned frame still contains ``target`` (typical when scoring the training
-    CSV), the returned table includes ``actual_target`` so you can compare accuracy;
-    for real unlabeled rows you would drop ``target`` upstream or ignore that column.
+    If the cleaned frame still contains ``target`` (typical when scoring the
+    training CSV), the returned table includes ``actual_target`` so you can
+    compare accuracy; for real unlabeled rows you would drop ``target``
+    upstream or ignore that column.
 
     Parameters
     ----------
     raw_csv
-        Path to raw UCI-style heart data (same schema as ``data/heart_disease_UCI_dataset.csv``).
+        Path to raw UCI-style heart data (same schema as
+        ``data/heart_disease_UCI_dataset.csv``).
     model_path, feature_names_path
         Outputs from training (defaults under ``models/``).
     output_csv
@@ -127,18 +135,22 @@ def main(argv: list[str] | None = None) -> None:
     """
     CLI wrapper around :func:`run_inference`.
 
-    Run ``python src/model_training/train.py`` before this so ``models/best_model.pkl`` exists.
+    Run ``python src/model_training/train.py`` before this so
+    ``models/best_model.pkl`` exists.
     """
     parser = argparse.ArgumentParser(
         description=(
-            "Score rows from a RAW heart-disease CSV using the saved training pipeline. "
-            "Preprocessing matches training (load_data + clean_data)."
+            "Score rows from a RAW heart-disease CSV using the saved "
+            "training pipeline. Preprocessing matches training (load_data + "
+            "clean_data)."
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
   python src/model_training/inference.py --output data/batch_predictions.csv
-  python src/model_training/inference.py --raw data/heart_disease_UCI_dataset.csv --model models/best_model.pkl
+  python src/model_training/inference.py \\
+    --raw data/heart_disease_UCI_dataset.csv \\
+    --model models/best_model.pkl
 """,
     )
     parser.add_argument(
@@ -151,19 +163,28 @@ Examples:
         "--model",
         type=Path,
         default=MODELS_DIR / "best_model.pkl",
-        help="Joblib-serialised sklearn Pipeline from training (default: models/best_model.pkl)",
+        help=(
+            "Joblib-serialised sklearn Pipeline from training (default: "
+            "models/best_model.pkl)"
+        ),
     )
     parser.add_argument(
         "--feature-names",
         type=Path,
         default=MODELS_DIR / "feature_names.pkl",
-        help="Pickled list of column names in the order used when training (default: models/feature_names.pkl)",
+        help=(
+            "Pickled list of column names in the order used when training "
+            "(default: models/feature_names.pkl)"
+        ),
     )
     parser.add_argument(
         "--output",
         type=Path,
         default=None,
-        help="If set, save predictions to this CSV path; always prints preview to stdout",
+        help=(
+            "If set, save predictions to this CSV path; always prints preview "
+            "to stdout"
+        ),
     )
     args = parser.parse_args(argv)
 

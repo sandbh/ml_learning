@@ -1,12 +1,13 @@
 """
-FastAPI inference API for the heart-disease classifier (containerisation / Task 6).
+FastAPI inference API for the heart-disease classifier (containerisation /
+Task 6).
 
 **File:** ``src/api/api.py``
 
 **Endpoints**
 
-- ``POST /predict`` — JSON body matches ``PatientData``; returns prediction, label,
-  confidence (probability of class 1), and risk band.
+- ``POST /predict`` — JSON body matches ``PatientData``; returns prediction,
+  label, confidence (probability of class 1), and risk band.
 - ``GET /health`` — Liveness; confirms the sklearn pipeline loaded.
 - ``GET /metrics`` — Prometheus text exposition (monitoring / Task 8).
 
@@ -18,15 +19,20 @@ FastAPI inference API for the heart-disease classifier (containerisation / Task 
     python src/api/api.py
     # or: uvicorn api.api:app --app-dir src --host 0.0.0.0 --port 8000
 
-**Usage (Docker)** — image CMD runs ``uvicorn api.api:app`` with ``PYTHONPATH=/app/src``;
-ensure ``models/best_model.pkl`` and ``models/feature_names.pkl`` exist (train first or mount ``./models``).
+**Usage (Docker)** — image CMD runs ``uvicorn api.api:app`` with
+``PYTHONPATH=/app/src``; ensure ``models/best_model.pkl`` and
+``models/feature_names.pkl`` exist (train first or mount ``./models``).
 
 **Environment**
 
-- ``MODEL_PATH`` — joblib pipeline (default: ``<repo>/models/best_model.pkl``).
-- ``FEATURE_PATH`` — pickled feature name list (default: ``<repo>/models/feature_names.pkl``).
-- ``API_LOG_PATH`` — optional request log file (default: ``<repo>/api_requests.log``).
-- ``PORT`` — bind port when running ``python src/api/api.py`` (default: ``8000``).
+- ``MODEL_PATH`` — joblib pipeline (default:
+  ``<repo>/models/best_model.pkl``).
+- ``FEATURE_PATH`` — pickled feature name list (default:
+  ``<repo>/models/feature_names.pkl``).
+- ``API_LOG_PATH`` — optional request log file (default:
+  ``<repo>/api_requests.log``).
+- ``PORT`` — bind port when running ``python src/api/api.py`` (default:
+  ``8000``).
 
 **Author.** SANDIP BHATTACHARYYA — BITS Pilani ID 2025cs05025
 """
@@ -44,24 +50,36 @@ import joblib
 import pandas as pd
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import Response
-from prometheus_client import CONTENT_TYPE_LATEST, Counter, Gauge, Histogram, generate_latest
+from prometheus_client import (
+    CONTENT_TYPE_LATEST,
+    Counter,
+    Gauge,
+    Histogram,
+    generate_latest,
+)
 from pydantic import BaseModel, Field
 
 _SRC_ROOT = Path(__file__).resolve().parent.parent  # .../src
 if str(_SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(_SRC_ROOT))
 
-from config.paths import MODELS_DIR, PROJECT_ROOT
+from config.paths import MODELS_DIR, PROJECT_ROOT  # noqa: E402
 
-MODEL_PATH = Path(os.getenv("MODEL_PATH", str(MODELS_DIR / "best_model.pkl")))
-FEATURE_PATH = Path(os.getenv("FEATURE_PATH", str(MODELS_DIR / "feature_names.pkl")))
+MODEL_PATH = Path(
+    os.getenv("MODEL_PATH", str(MODELS_DIR / "best_model.pkl"))
+)
+FEATURE_PATH = Path(
+    os.getenv("FEATURE_PATH", str(MODELS_DIR / "feature_names.pkl"))
+)
 
 # ─────────────────────────────────────────────
 # LOGGING (Task 8)
 # ─────────────────────────────────────────────
 
 _log_handlers: list[logging.Handler] = [logging.StreamHandler()]
-_log_file = Path(os.getenv("API_LOG_PATH", str(PROJECT_ROOT / "api_requests.log")))
+_log_file = Path(
+    os.getenv("API_LOG_PATH", str(PROJECT_ROOT / "api_requests.log"))
+)
 try:
     _log_file.parent.mkdir(parents=True, exist_ok=True)
     _log_handlers.append(logging.FileHandler(_log_file))
@@ -117,7 +135,7 @@ CONFIDENCE_HIST = Histogram(
 )
 
 # ─────────────────────────────────────────────
-# REQUEST / RESPONSE SCHEMAS (before load_model: schema validation uses PatientData)
+# REQUEST / RESPONSE SCHEMAS (before load_model: PatientData validation)
 # ─────────────────────────────────────────────
 
 
@@ -128,13 +146,17 @@ class PatientData(BaseModel):
     trestbps: float = Field(
         ..., description="Resting blood pressure (mmHg)", examples=[145.0]
     )
-    chol: float = Field(..., description="Serum cholesterol (mg/dl)", examples=[233.0])
+    chol: float = Field(
+        ..., description="Serum cholesterol (mg/dl)", examples=[233.0]
+    )
     fbs: int = Field(
         ...,
         description="Fasting blood sugar >120: 1=true, 0=false",
         examples=[1],
     )
-    restecg: int = Field(..., description="Resting ECG results 0–2", examples=[2])
+    restecg: int = Field(
+        ..., description="Resting ECG results 0–2", examples=[2]
+    )
     thalach: float = Field(
         ..., description="Maximum heart rate achieved", examples=[150.0]
     )
@@ -151,7 +173,9 @@ class PatientData(BaseModel):
         description="Slope of peak exercise ST segment 0–2",
         examples=[2],
     )
-    ca: float = Field(..., description="Number of major vessels (0–3)", examples=[0.0])
+    ca: float = Field(
+        ..., description="Number of major vessels (0–3)", examples=[0.0]
+    )
     thal: float = Field(
         ...,
         description="Thal: 0=normal, 1=fixed defect, 2=reversible",
@@ -183,12 +207,16 @@ def load_model() -> None:
     if not MODEL_PATH.is_file():
         raise FileNotFoundError(f"Model not found at {MODEL_PATH.resolve()}")
     if not FEATURE_PATH.is_file():
-        raise FileNotFoundError(f"Feature list not found at {FEATURE_PATH.resolve()}")
+        raise FileNotFoundError(
+            f"Feature list not found at {FEATURE_PATH.resolve()}"
+        )
 
     model = joblib.load(MODEL_PATH)
     feature_names = joblib.load(FEATURE_PATH)
     if not isinstance(feature_names, list) or not feature_names:
-        raise ValueError("feature_names.pkl must be a non-empty list of column names.")
+        raise ValueError(
+            "feature_names.pkl must be a non-empty list of column names."
+        )
 
     expected = set(PatientData.model_fields.keys())
     missing = set(feature_names) - expected
@@ -227,9 +255,16 @@ def health_check():
     return {"status": "ok", "model_loaded": model is not None}
 
 
-@app.post("/predict", response_model=PredictionResponse, summary="Predict heart disease risk")
+@app.post(
+    "/predict",
+    response_model=PredictionResponse,
+    summary="Predict heart disease risk",
+)
 def predict(patient: PatientData):
-    """Run the saved pipeline on one patient row; update Prometheus metrics and logs."""
+    """
+    Run the saved pipeline on one patient row; update Prometheus metrics and
+    logs.
+    """
     if model is None or feature_names is None:
         raise HTTPException(status_code=503, detail="Model not loaded")
 
@@ -260,7 +295,8 @@ def predict(patient: PatientData):
         CONFIDENCE_HIST.observe(confidence)
 
         logger.info(
-            "PREDICT | pred=%s conf=%.3f risk=%s latency=%.3fs | age=%s sex=%s cp=%s",
+            "PREDICT | pred=%s conf=%.3f risk=%s latency=%.3fs | "
+            "age=%s sex=%s cp=%s",
             prediction,
             confidence,
             risk,

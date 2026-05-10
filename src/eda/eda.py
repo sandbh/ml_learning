@@ -1,11 +1,14 @@
 """
 Exploratory Data Analysis (EDA) for the heart disease dataset.
 
-**File:** ``src/eda/eda.py`` — executable CLI (``python src/eda/eda.py [step]``).
+**File:** ``src/eda/eda.py`` — executable CLI
+(``python src/eda/eda.py [step]``).
 
-**Role in the project.** This is the entry point for **data understanding** and for
-producing **heart_disease_processed_dataset.csv**. Downstream ``model_training/train.py`` expects that file;
-run ``python src/eda/eda.py all`` (or at least the preprocess step) before training.
+**Role in the project.** This is the entry point for **data understanding**
+and for producing **heart_disease_processed_dataset.csv**. Downstream
+``model_training/train.py`` expects that file; run
+``python src/eda/eda.py all`` (or at least the preprocess step) before
+training.
 
 Preprocessing primitives live in ``data_preprocessing/pre_processing_data.py``.
 This module orchestrates them and adds summaries plus plots.
@@ -13,10 +16,11 @@ This module orchestrates them and adds summaries plus plots.
 **What it does**
 
 1. **Inspect** — Data-quality summary on the raw table (:func:`inspect_data`).
-2. **EDA** — Figures under ``screenshots/`` (class balance, histograms, correlation
-   heatmap, age by outcome) via :func:`perform_eda`.
+2. **EDA** — Figures under ``screenshots/`` (class balance, histograms,
+   correlation heatmap, age by outcome) via :func:`perform_eda`.
 
-The CLI :func:`main` wires preprocessing to those steps and writes ``data/heart_disease_processed_dataset.csv``.
+The CLI :func:`main` wires preprocessing to those steps and writes
+``data/heart_disease_processed_dataset.csv``.
 
 **CLI (project root)**
 
@@ -25,12 +29,13 @@ The CLI :func:`main` wires preprocessing to those steps and writes ``data/heart_
     python src/eda/eda.py              # full pipeline (default)
     python src/eda/eda.py load         # step 1 — load raw CSV only
     python src/eda/eda.py inspect      # step 2 — load + data-quality summary
-    python src/eda/eda.py preprocess   # step 3 — clean + save data/heart_disease_processed_dataset.csv
-    python src/eda/eda.py eda          # step 4 — plots from cleaned CSV (after preprocess)
+    python src/eda/eda.py preprocess   # step 3 — clean + save cleaned CSV
+    python src/eda/eda.py eda          # step 4 — plots (after preprocess)
     python src/eda/eda.py all          # chained workflow
     python src/eda/eda.py --help
 
-**Dataset.** ``data/heart_disease_UCI_dataset.csv`` (comma header, space-separated rows).
+**Dataset.** ``data/heart_disease_UCI_dataset.csv`` (comma header,
+space-separated rows).
 
 **Attribution.** UCI Heart Disease —
 https://archive.ics.uci.edu/ml/datasets/Heart+Disease
@@ -50,20 +55,27 @@ import sys
 import warnings
 from pathlib import Path
 
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import seaborn as sns
+
 # Resolve packages ``config`` and ``data_preprocessing`` from project root
 _EDA_DIR = Path(__file__).resolve().parent
 _SRC_ROOT = _EDA_DIR.parent  # .../src
 if str(_SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(_SRC_ROOT))
 
-from config.paths import DEFAULT_CLEAN_CSV, DEFAULT_CSV, SCREENSHOTS_DIR
-
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
-import seaborn as sns
-
-from data_preprocessing import clean_data, load_data, save_cleaned_csv
+from config.paths import (  # noqa: E402
+    DEFAULT_CLEAN_CSV,
+    DEFAULT_CSV,
+    SCREENSHOTS_DIR,
+)
+from data_preprocessing import (  # noqa: E402
+    clean_data,
+    load_data,
+    save_cleaned_csv,
+)
 
 warnings.filterwarnings("ignore", category=FutureWarning)
 
@@ -76,8 +88,9 @@ def inspect_data(df: pd.DataFrame) -> None:
     """
     Print a concise data-quality summary to stdout.
 
-    **When to use:** After ``load`` and before cleaning, to see missing symbols (``?``),
-    odd dtypes, and basic statistics. Does not modify the dataframe.
+    **When to use:** After ``load`` and before cleaning, to see missing
+    symbols (``?``), odd dtypes, and basic statistics. Does not modify the
+    dataframe.
 
     Shows the first rows, dtypes, ``describe`` for all columns, and counts of
     missing values or literal ``'?'`` tokens (common missing sentinel in this
@@ -115,12 +128,15 @@ def inspect_data(df: pd.DataFrame) -> None:
 # ─────────────────────────────────────────────
 
 
-def perform_eda(df: pd.DataFrame, output_dir: str | Path | None = None) -> None:
+def perform_eda(
+    df: pd.DataFrame, output_dir: str | Path | None = None
+) -> None:
     """
     Generate and save exploratory plots for the cleaned dataset.
 
-    **When to use:** Only after :func:`data_preprocessing.clean_data` (numeric table).
-    These charts support reports and slides; they are independent of model training.
+    **When to use:** Only after :func:`data_preprocessing.clean_data` (numeric
+    table). These charts support reports and slides; they are independent of
+    model training.
 
     Produces: (1) class balance bar chart with counts and percentages,
     (2) histograms for key numeric features, (3) lower-triangle Pearson
@@ -207,7 +223,9 @@ def perform_eda(df: pd.DataFrame, output_dir: str | Path | None = None) -> None:
         axes[i].set_ylabel("Frequency")
     for j in range(len(numeric_for_hist), len(axes)):
         axes[j].set_visible(False)
-    fig.suptitle("Feature distributions", fontsize=15, fontweight="bold", y=1.02)
+    fig.suptitle(
+        "Feature distributions", fontsize=15, fontweight="bold", y=1.02
+    )
     plt.tight_layout()
     fig.savefig(out / "feature_histograms.png", dpi=150, bbox_inches="tight")
     plt.close(fig)
@@ -239,7 +257,9 @@ def perform_eda(df: pd.DataFrame, output_dir: str | Path | None = None) -> None:
             fontweight="bold",
         )
         plt.tight_layout()
-        fig.savefig(out / "correlation_heatmap.png", dpi=150, bbox_inches="tight")
+        fig.savefig(
+            out / "correlation_heatmap.png", dpi=150, bbox_inches="tight"
+        )
         plt.close(fig)
         print(f"   Saved: {out / 'correlation_heatmap.png'}")
 
@@ -258,7 +278,9 @@ def perform_eda(df: pd.DataFrame, output_dir: str | Path | None = None) -> None:
             label=name,
             edgecolor="white",
         )
-    ax.set_title("Age distribution by outcome", fontsize=13, fontweight="bold")
+    ax.set_title(
+        "Age distribution by outcome", fontsize=13, fontweight="bold"
+    )
     ax.set_xlabel("Age")
     ax.set_ylabel("Count")
     ax.legend(frameon=True)
@@ -284,7 +306,9 @@ def run_step_load(raw_path: Path) -> pd.DataFrame:
 
 
 def run_step_inspect(raw_path: Path) -> pd.DataFrame:
-    """Step 2 — load raw data and print :func:`inspect_data` quality summary."""
+    """
+    Step 2 — load raw data and print :func:`inspect_data` quality summary.
+    """
     print("=" * 55)
     print("   STEP 2 — INSPECT")
     print("=" * 55)
@@ -295,12 +319,16 @@ def run_step_inspect(raw_path: Path) -> pd.DataFrame:
 
 def run_step_preprocess(raw_path: Path) -> pd.DataFrame:
     """
-    Step 3 — load raw data, run :func:`clean_data`, write ``data/heart_disease_processed_dataset.csv``.
+    Step 3 — load raw data, run :func:`clean_data`, write
+    ``data/heart_disease_processed_dataset.csv``.
 
     Does **not** generate PNG plots; use ``eda`` step or ``all`` for charts.
     """
     print("=" * 55)
-    print("   STEP 3 — PREPROCESS (data_preprocessing/pre_processing_data.py)")
+    print(
+        "   STEP 3 — PREPROCESS "
+        "(data_preprocessing/pre_processing_data.py)"
+    )
     print("=" * 55)
     df_raw = load_data(raw_path)
     df_clean = clean_data(df_raw)
@@ -314,7 +342,8 @@ def run_step_eda(
     screenshots_dir: Path | None = None,
 ) -> None:
     """
-    Step 4 — read an existing cleaned CSV from disk and run :func:`perform_eda`.
+    Step 4 — read an existing cleaned CSV from disk and run
+    :func:`perform_eda`.
 
     Use when preprocessing already ran and you only want to refresh plots.
     """
@@ -347,7 +376,9 @@ def run_all(
     inspect_data(df_raw)
 
     print("\n" + "=" * 55)
-    print("   Preprocessing (data_preprocessing/pre_processing_data.py)")
+    print(
+        "   Preprocessing (data_preprocessing/pre_processing_data.py)"
+    )
     print("=" * 55)
     df_clean = clean_data(df_raw)
 
@@ -370,8 +401,10 @@ def main(argv: list[str] | None = None) -> None:
     - **inspect** — load + print table summary (:func:`inspect_data`).
     - **preprocess** — load, :func:`clean_data`, save
       ``heart_disease_processed_dataset.csv`` (required before training).
-    - **eda** — Load an *existing* cleaned CSV and write PNGs to ``screenshots/`` (default).
-    - **all** — inspect raw data, preprocess, run EDA, ensure cleaned CSV exists.
+    - **eda** — Load an *existing* cleaned CSV and write PNGs to
+      ``screenshots/`` (default).
+    - **all** — inspect raw data, preprocess, run EDA, ensure cleaned CSV
+      exists.
 
     Parameters
     ----------
@@ -391,7 +424,8 @@ Examples:
   python src/eda/eda.py preprocess
   python src/eda/eda.py eda
   python src/eda/eda.py all
-  python src/eda/eda.py eda --clean-csv data/heart_disease_processed_dataset.csv
+  python src/eda/eda.py eda \\
+    --clean-csv data/heart_disease_processed_dataset.csv
 """,
     )
     parser.add_argument(
@@ -417,12 +451,16 @@ Examples:
         "--screenshots",
         type=Path,
         default=None,
-        help="Directory for EDA PNGs (default: <project>/screenshots)",
+        help=(
+            "Directory for EDA PNGs (default: <project>/screenshots)"
+        ),
     )
     args = parser.parse_args(argv)
 
     raw_path = args.raw if args.raw is not None else DEFAULT_CSV
-    clean_csv = args.clean_csv if args.clean_csv is not None else DEFAULT_CLEAN_CSV
+    clean_csv = (
+        args.clean_csv if args.clean_csv is not None else DEFAULT_CLEAN_CSV
+    )
     shots = args.screenshots
 
     if args.step == "load":
